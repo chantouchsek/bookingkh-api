@@ -1,0 +1,76 @@
+openapi: 3.0.0
+info:
+  title: 'Widsley API Documentation'
+  description: 'Bookingkh api to demonstrate features in the Bookingkh Job Portal'
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    name: 'Touch Developer at Mango Byte'
+    email: s.chantouch@mango-byte.com
+  license:
+    name: 'Apache 2.0'
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: 0.0.1
+servers:
+  -
+    url: 'http://bookingkh-api.test/api'
+    description: 'API Development Server'
+  -
+    url: 'http://bookingkh-api.test/'
+    description: 'API Staging Server'
+paths:
+  /oauth/token:
+    post:
+      tags:
+        - Auth
+      summary: 'Logs in user session'
+      description: 'Admin user login'
+      operationId: loginUser
+      requestBody:
+        description: 'Login User'
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Auth'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Auth'
+      responses:
+        200:
+          description: 'User response'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth'
+        default:
+          description: 'unexpected error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Auth'
+components:
+  schemas:
+    Auth:
+      type: object
+      allOf:
+        -
+          required:
+            - email
+            - password
+          properties:
+            email:
+              description: App\Models\User.
+              type: string
+              default: chantouchsek.cs83@gmail.com
+            password:
+              description: App\Models\User.
+              type: string
+              default: password
+          type: object
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      in: header
+      description: 'JWT Authentication'
